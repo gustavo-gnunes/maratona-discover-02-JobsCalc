@@ -4,12 +4,19 @@ const express = require("express")
 const server = express()
 
 const routes = require("./routes")
+const path = require("path")
 
 // o ejs faz um processamento do html, olhando tudo que tem o contexto <% javascript %> dentro do arquivo html
 // o ejs refaz todo codigo js dentro do arquivo html, entregando o html puro
 // para colocar código js dentro do html, deve colocar entre <% %>
 // view engine: fala para express que a ferramenta que vai ser utilizada para renderizar html é o ejs
 server.set('view engine', 'ejs') // usando template engine
+
+// Mudar a localização da pasta view
+// 'views': pasta padrão
+// __dirname: onde a pasta server está "src". 
+// path.join(__dirname, 'views'): junta o caminho __dirname "src", com views
+server.set('views', path.join(__dirname, 'views'))
 
 // habilitar arquivos staticos. Serve para criar todas as rotas que estão na pasta public
 server.use(express.static("public"))
