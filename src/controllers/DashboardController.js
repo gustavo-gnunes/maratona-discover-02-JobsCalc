@@ -4,9 +4,12 @@ const Profile = require('../model/Profile') // importa o arquivo Profile.js
 
 module.exports = {
     // req: pede algo. res: responde o que foi pedido
-    index(req, res) {
-        const jobs = Job.get() // pega todo array em Job.js
-        const profile = Profile.get()
+    // async / await: comando do javascript. O await só funciona se ele estiver dentro do async 
+    // async: tudo que estiver dentro dele vai ter que esperar. Ele fala para o js que dentro da função vão ter await
+    async index(req, res) {
+        const jobs = await Job.get() // pega todo array em Job.js
+        // precisa colocar o await, para esperar chamar está função, para depois fazer o resto do código
+        const profile = await Profile.get() // precisa colocar await, pq dentro da função .get() tem async/await
 
         // para calcular e mostrar para usuário final na tela principal "index.ejs" os Projetos ao total, Em andamento, Encerrados
         let statusCount = {

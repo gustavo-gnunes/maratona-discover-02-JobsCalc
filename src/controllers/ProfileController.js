@@ -3,11 +3,13 @@ const Profile = require('../model/Profile') // importa o arquivo Profile.js
 // module.exports: é necessario, pq senão não tem como importar esse arquivo no arquivo routes.js
 // precisa ser exportado para usar as funções que estão aqui dentro deste arquivo
 module.exports = {
-    index(req, res) {
+   async index(req, res) {
         // { profile: Profile.get() }: envia o objeto que foi passado no arquivo Profile.js, podendo usar as variaveis dentro do html, no arquivo profile.ejs
-        return res.render("profile", { profile: Profile.get() })
+        return res.render("profile", { profile: await Profile.get() })
     },
-    update(req, res) {
+    // async / await: comando do javascript. O await só funciona se ele estiver dentro do async 
+    // async: tudo que estiver dentro dele vai ter que esperar. Ele fala para o js que dentro da função vão ter await
+    async update(req, res) {
         // req.body: onde que fica as informações preencidas pelo usuário
         // req.body: para pegar os dados
         const data = req.body
@@ -22,10 +24,14 @@ module.exports = {
         // qual será o valor da minha horas
         const valueHour = data["monthly-budget"] / monthlyTotalHours
 
+        // await: espera algo ser executado para depois executar outra
+        // precisa colocar await, pq dentro da função .get() tem async/await
+        const profile = await Profile.get()
+
         // Profile.update: vai receber tudo que tem em Profile.get() + tudo em req.body + "value-hour": valueHour
         // Profile.update: ele vai chamar essa função que está dentro do arquivo Profile.js, e atualizar os dados alterados
-        Profile.update({
-            ...Profile.get(),
+        await Profile.update({
+            ...profile,
             ...req.body,
             "value-hour": valueHour
         })
